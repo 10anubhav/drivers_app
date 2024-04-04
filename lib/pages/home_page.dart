@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage>
 
   final Completer<GoogleMapController> googleMapCompleterController =  Completer<GoogleMapController>();
   GoogleMapController? controllerGoogleMap ;
-  Position? currentPositionOfUser;
+  Position? currentPositionOfDriver;
   Color colorToShow=Colors.green;
   String titleToShow ="GO ONLINE NOW";
   bool isDriverAvaliable= false;
@@ -32,9 +32,10 @@ class _HomePageState extends State<HomePage>
   getCurrentLiveLocationOfDriver() async
   {
     Position positionOfUser = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation);
-    currentPositionOfUser= positionOfUser;
+    currentPositionOfDriver= positionOfUser;
+    driverCurrentPosition = currentPositionOfDriver;
 
-    LatLng positionOfUserInLatlng= LatLng(currentPositionOfUser!.latitude,currentPositionOfUser!.longitude);
+    LatLng positionOfUserInLatlng= LatLng(currentPositionOfDriver!.latitude,currentPositionOfDriver!.longitude);
 
     CameraPosition cameraPosition=CameraPosition(target: positionOfUserInLatlng, zoom: 15);
     controllerGoogleMap!.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
@@ -47,8 +48,8 @@ class _HomePageState extends State<HomePage>
 
       Geofire.setLocation(
           FirebaseAuth.instance.currentUser!.uid,
-          currentPositionOfUser!.latitude,
-          currentPositionOfUser!.longitude,
+          currentPositionOfDriver!.latitude,
+          currentPositionOfDriver!.longitude,
       );
 
       newTripRequestReference=FirebaseDatabase.instance.ref()
@@ -65,14 +66,14 @@ class _HomePageState extends State<HomePage>
     positionStreamHomePage=Geolocator.getPositionStream()
         .listen((Position position)
     {
-     currentPositionOfUser = position;
+     currentPositionOfDriver = position;
 
      if(isDriverAvaliable == true)
        {
          Geofire.setLocation(
              FirebaseAuth.instance.currentUser!.uid,
-             currentPositionOfUser!.latitude,
-           currentPositionOfUser!.longitude,
+             currentPositionOfDriver!.latitude,
+             currentPositionOfDriver!.longitude,
          );
        }
 
