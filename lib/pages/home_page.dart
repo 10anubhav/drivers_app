@@ -1,9 +1,12 @@
 import 'dart:async';
-
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:drivers_app/methods/map_theme_methods.dart';
 import 'package:drivers_app/pushNotification/push_notification_system.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -27,6 +30,8 @@ class _HomePageState extends State<HomePage>
   String titleToShow ="GO ONLINE NOW";
   bool isDriverAvaliable= false;
   DatabaseReference? newTripRequestReference;
+  MapThemeMethods themeMethods = MapThemeMethods();
+
 
 
   getCurrentLiveLocationOfDriver() async
@@ -124,6 +129,7 @@ class _HomePageState extends State<HomePage>
             onMapCreated: (GoogleMapController mapController)
             {
               controllerGoogleMap = mapController;
+              themeMethods.updateMapTheme(controllerGoogleMap!);
 
               googleMapCompleterController.complete(controllerGoogleMap);
 
