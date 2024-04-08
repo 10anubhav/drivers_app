@@ -1,6 +1,7 @@
 
 import 'package:drivers_app/authentication/login_screen.dart';
 import 'package:drivers_app/firebase_options.dart';
+import 'package:drivers_app/pages/dashboard.dart';
 import 'package:drivers_app/pages/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.black
       ),
-      home: FirebaseAuth.instance.currentUser==null? LogInScreen():HomePage(),
+      home: FirebaseAuth.instance.currentUser==null? LogInScreen(): Dashboard(),
     );
   }
 }
